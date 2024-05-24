@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption / Decryption With Emoticons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-section {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            color: #333;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Encrypt to Emoticons</h1>
+    <div class="form-section">
+        <h2>Encryption</h2>
+        <form id="encryptForm">
+            <label for="message">Enter your message:</label>
+            <input type="text" id="message" name="message" required>
+            <button type="submit">Encrypt</button>
+        </form>
+        <div id="encryptResult" class="result"></div>
+    </div>
+
+    <div class="form-section">
+        <h1>Decrypt from Emoticons</h1>
+        <h2>Decryption</h2>
+        <form id="decryptForm">
+            <label for="decryptMessage">Enter your encrypted message:</label>
+            <input type="text" id="decryptMessage" name="decryptMessage" required>
+            <button type="submit">Decrypt</button>
+        </form>
+        <div id="decryptResult" class="result"></div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('encryptForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var message = document.getElementById('message').value;
+        fetch('/encrypt-to-emoji?message=' + encodeURIComponent(message))
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('encryptResult').innerText = "Encrypted Message: " + data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+    document.getElementById('decryptForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var encryptedMessage = document.getElementById('decryptMessage').value;
+        fetch('/decrypt-from-emoji?message=' + encodeURIComponent(encryptedMessage))
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('decryptResult').innerText = "Decrypted Message: " + data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+</body>
+</html>
